@@ -8,7 +8,7 @@ class Career extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fullName: '',
+      fullName: "",
       birthDate: new Date(),
       email: '',
       gender: '',
@@ -35,8 +35,6 @@ class Career extends Component {
         fileImage: 'ok',
         letter: 'ok',
       },
-      isModalOpen: false,
-      show: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -53,10 +51,8 @@ class Career extends Component {
   handleChange(e) {
     e.preventDefault();
     const { name, value } = e.target;
-    let formErrors = this.state.formErrors;
-    console.log('name: ', name);
-    console.log('value : ', value);
-
+    const {formErrors} = this.state;
+    console.log(e.target.value, "value===>12345")
     switch (name) {
       case 'fullName':
         formErrors.fullName =
@@ -123,30 +119,71 @@ class Career extends Component {
       () => console.log()
     );
   }
+  
+  // eslint-disable-next-line class-methods-use-this
+  handleSubmit(e){
+    const{ values }=e.target;
+    console.log(values, "values=====>");
 
-  handleSubmit(e) {
-    console.log(this.state.formErrors);
     e.preventDefault();
-    if (
-      this.state.formErrors.fullName === 'Perfect!' &&
-      this.state.formErrors.email === 'Perfect!' &&
-      this.state.formErrors.gender === 'Perfect!' &&
-      this.state.formErrors.address === 'Perfect!' &&
-      this.state.formErrors.qualification === 'Perfect!' &&
-      this.state.formErrors.phone === 'Perfect!'
-    ) {
-      Swal.fire(
-        'Thanks for submitting!',
-        'We will contact you soon!',
-        'success'
-      );
-    } else {
-      Swal.fire({
-        type: 'error',
-        title: 'Oops...',
-        text: 'Something went wrong!',
-      });
-    }
+    const { fullName, birthDate, email, gender, qualification, phone, address, city, state, file, fileImage, letter } = e.target;
+    const details = {
+      fullName: fullName.value,
+      birthDate: birthDate.value,
+      email: email.value,
+      gender: gender.value,
+      qualification: qualification.value,
+      phone: phone.value,
+      address: address.value,
+      city: city.value,
+      state: state.value,
+      file: file.value,
+      fileImage:fileImage.value,
+      letter: letter.value,
+    };
+    console.log(details, "details====>");
+    const response = fetch('http://localhost:8000/jobs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify(details),
+    });
+    const result = response;
+    if(result)
+      {
+        Swal.fire(
+          'Thanks for submitting!',
+          'We will contact you soon!',
+          'success'
+        );
+      } else {
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+      }
+    // if (
+    //   fullName === 'Perfect!' &&
+    //   email === 'Perfect!' &&
+    //   gender === 'Perfect!' &&
+    //   address === 'Perfect!' &&
+    //   qualification === 'Perfect!' &&
+    //   phone === 'Perfect!'
+    // ) {
+    //   Swal.fire(
+    //     'Thanks for submitting!',
+    //     'We will contact you soon!',
+    //     'success'
+    //   );
+    // } else {
+    //   Swal.fire({
+    //     type: 'error',
+    //     title: 'Oops...',
+    //     text: 'Something went wrong!',
+    //   });
+    // }
   }
 
   render() {

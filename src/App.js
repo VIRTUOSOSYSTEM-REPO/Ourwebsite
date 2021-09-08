@@ -1,8 +1,11 @@
+/* eslint-disable react/no-children-prop */
 import React, { useRef, useEffect } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import { useLocation, Switch } from 'react-router-dom';
+import ReactGA from 'react-ga';
 import AppRoute from './utils/AppRoute';
 import ScrollReveal from './utils/ScrollReveal';
-import ReactGA from 'react-ga';
 
 // Layouts
 import LayoutDefault from './layouts/LayoutDefault';
@@ -10,7 +13,6 @@ import LayoutDefault from './layouts/LayoutDefault';
 // Views
 import Home from './views/Home';
 // import Career from './views/Career';
-import Checkout from './views/career/Checkout';
 import Career from './views/career/Career';
 import ContactForm from './views/contact/ContactForm';
 
@@ -24,7 +26,7 @@ const trackPage = page => {
 
 const App = () => {
   const childRef = useRef();
-  let location = useLocation();
+  const location = useLocation();
 
   useEffect(() => {
     const page = location.pathname;
@@ -35,6 +37,7 @@ const App = () => {
   }, [location]);
 
   return (
+    <>
     <ScrollReveal
       ref={childRef}
       children={() => (
@@ -53,8 +56,11 @@ const App = () => {
             layout={LayoutDefault}
           />
         </Switch>
+       
       )}
     />
+     <ToastContainer />
+    </>
   );
 };
 
